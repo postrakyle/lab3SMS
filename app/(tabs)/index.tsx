@@ -1,74 +1,71 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, View, Button, Alert, TextInput } from 'react-native';
+import * as SMS from 'expo-sms';
+import {Link} from 'expo-router';
+import React from 'react';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+
+  const id = ['0404695566'];//, '9876543210'];
+  const [text, onChangeText] = React.useState('Hello: My lecturer is the greatest!!');
+
+  function askToSend() {
+    Alert.alert('sms send', 'send to ' + id, [
+      {
+        text: 'cancel',
+      },
+      {
+        text: 'ok', onPress:()=> _handlePressButtonAsync() 
+      }
+    ]);
+  }
+
+  async function _handlePressButtonAsync(){
+  const { result } = await SMS.sendSMSAsync(
+    id,
+    text,
+    //* {
+    //   attachments: {
+    //     uri: 'https://imgs.search.brave.com/Q3str5rYhRdszmN74eo3GoQb4Z-TrJA17tUWnhkjqjQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtd2l4bXAtZWQz/MGE4NmI4YzRjYTg4/Nzc3MzU5NGMyLndp/eG1wLmNvbS9mL2M3/YTRjMjFlLWNjOWEt/NDlkZS04ODM1LWY2/YmY4YjM0OWE0My9k/aXF1NmlwLTI3OTkz/YjdiLTFiYjEtNGYx/ZS1iZTA2LTY4MTMz/YzBiYmEzMi5qcGcv/djEvZmlsbC93XzI1/MCxoXzI1MCxxXzcw/LHN0cnAva2lzc2xh/bmRfdGhlbWVfcmVk/X3BhbmRhX2J5X2Nh/cmVid2VhcmlfZGlx/dTZpcC0yNTB0Lmpw/Zz90b2tlbj1leUow/ZVhBaU9pSktWMVFp/TENKaGJHY2lPaUpJ/VXpJMU5pSjkuZXlK/emRXSWlPaUoxY200/NllYQndPamRsTUdR/eE9EZzVPREl5TmpR/ek56TmhOV1l3WkRR/eE5XVmhNR1F5Tm1V/d0lpd2lhWE56SWpv/aWRYSnVPbUZ3Y0Rv/M1pUQmtNVGc0T1Rn/eU1qWTBNemN6WVRW/bU1HUTBNVFZsWVRC/a01qWmxNQ0lzSW05/aWFpSTZXMXQ3SW1o/bGFXZG9kQ0k2SWp3/OU1UWTBNQ0lzSW5C/aGRHZ2lPaUpjTDJa/Y0wyTTNZVFJqTWpG/bExXTmpPV0V0TkRs/a1pTMDRPRE0xTFdZ/MlltWTRZak0wT1dF/ME0xd3ZaR2x4ZFRa/cGNDMHlOems1TTJJ/M1lpMHhZbUl4TFRS/bU1XVXRZbVV3Tmkw/Mk9ERXpNMk13WW1K/aE16SXVhbkJuSWl3/aWQybGtkR2dpT2lJ/OFBURTJOREFpZlYx/ZExDSmhkV1FpT2xz/aWRYSnVPbk5sY25a/cFkyVTZhVzFoWjJV/dWIzQmxjbUYwYVc5/dWN5SmRmUS54Tzdp/NHRRNDFxaUVhbU5V/cWkzeENjLWk4VlZr/R2dFdVl4VmUzYVBR/QlFv',
+    //     mimeType: 'image/png',
+    //     filename: 'myfile.png',
+    //   },
+    // }
   );
+  if (result === 'sent') {
+    alert("sent");
+  } else {
+    alert("Error: Check credit balance or check phone silly.")
+  }
+}
+  return (
+    <View style = {styles.header}>
+      <View style = {styles.containerRow}>
+          <Button 
+              title = "send"
+              onPress={askToSend}
+              />
+
+          <Link href="./contacts" asChild>
+            <Button title="contacts"></Button>
+          </Link>
+      </View>
+      <TextInput
+      onChangeText = {onChangeText}
+      value={text}
+      />
+    </View>
+
+    );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  header: {
+    padding: 40
+  },
+  containerRow:{
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+    gap: 8.
+  }
+}); 
