@@ -1,12 +1,12 @@
 import { Image, StyleSheet, View, Button, Alert, TextInput } from 'react-native';
 import * as SMS from 'expo-sms';
-import {Link} from 'expo-router';
+import {Link, useLocalSearchParams} from 'expo-router';
 import React from 'react';
 
 
 export default function HomeScreen() {
 
-  const id = ['0404695566'];//, '9876543210'];
+  const {id} = useLocalSearchParams<{id: ['0123456789', '9876543210']}>();
   const [text, onChangeText] = React.useState('Hello: My lecturer is the greatest!!');
 
   function askToSend() {
